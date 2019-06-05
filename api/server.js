@@ -17,7 +17,8 @@ server.use(cors())
 server.use(express.json())
 server.use(logger('dev'))
 
-// Routes
+// User Resource Routes
+// ==== GET ==== //
 router.get('/users', async (req, res) => {
   try {
     let data = await db.find('users')
@@ -28,9 +29,27 @@ router.get('/users', async (req, res) => {
   }
 })
 
-router.post('/register', requiredData, async (req, res) => {
+// ==== DELETE ==== //
+router.delete('/users/:id', validateId, async (req, res) => {
   try {
+    let data = await db.remove(req.data.id, 'Users')
+    res.send(data)
+  }
+  catch (err) {
+    res.status(500).send(err.message)
+  }
+})
 
+// Register Resource Route
+router.post('/register', requiredData, async (req, res) => {
+  let user = req.body
+
+  const hash = bcrpyt.hashSync(user.password, 14)
+  user.password = hash
+
+  try {
+    let data = await db.insert(user, 'Users')
+    res.status(201).send(data)
   }
   catch (err) {
     res.status(500).send(err.message)
@@ -47,14 +66,14 @@ router.post('/login', async (req, res) => {
 })
 
 // Activate routes
-server.use('/.netlify/functions/server/api', router)
+server.use('/api', router)
 server.use('/', (req, res) => {
   res.send(`<h1>WebAuth I Challenge API server</h1>`)
 })
 
 // Custom middleware
 const inputDataChecker = (arr, target) => target.every(v => arr.includes(v))
-const requiredFields = ['name', 'is_complete']
+const requiredFields = ['username', 'password']
 
 function requiredData(req, res, next) {
   if (!req.body || !Object.keys(req.body).length) {
@@ -63,6 +82,21 @@ function requiredData(req, res, next) {
     res.status(400).json({ message: "Missing required field." })
   } else {
     next()
+  }
+}
+
+async function validateId(req, res, next) {
+  try {
+    let data = await db.findById(req.params.id, 'Users')
+    if (data) {
+      req.data = data
+      next()
+    } else {
+      res.status(404).json({ message: `User ID ${req.params.id} not found` })
+    }
+  }
+  catch (err) {
+    res.status(500).json(err.message)
   }
 }
 
