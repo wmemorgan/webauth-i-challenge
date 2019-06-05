@@ -1,0 +1,74 @@
+### GET (Basic)
+http://localhost:9000/.netlify/functions/server/api
+
+### GET Users (ALL)
+GET http://localhost:9000/.netlify/functions/server/api/users HTTP/1.1
+username: boromir
+password: pass
+
+### GET Actions (ALL)
+http://localhost:9000/.netlify/functions/server/api/
+
+### GET Users (by ID)
+http://localhost:9000/.netlify/functions/server/api/users/1
+
+### GET Actions (ID)
+http://localhost:9000/.netlify/functions/server/api/users/2/actions/4
+
+### POST (Users)
+POST http://localhost:9000/.netlify/functions/server/api/register HTTP/1.1
+content-type: application/json
+
+{
+  "username": "pippin",
+  "password": "pass"
+}
+
+### POST (Login)
+POST http://localhost:9000/.netlify/functions/server/api/login HTTP/1.1
+content-type: application/json
+
+{
+  "username": "sam",
+  "password": "baggisdns"
+}
+
+### POST (Actions)
+POST http://localhost:9000/.netlify/functions/server/api/users/13/actions HTTP/1.1
+content-type: application/json
+
+{
+  "description": "Create AWS account",
+  "project_id": 13,
+  "notes": "Go to https://aws.amazon.com and sign up for a 'Free Tier' account",
+  "is_complete": false
+}
+
+### PUT (Project)
+PUT http://localhost:9000/.netlify/functions/server/api/users/12 HTTP/1.1
+content-type: application/json
+
+{
+  "name": "My Test Project #1",
+  "description": "Test project details",
+  "is_complete": false
+}
+
+### PUT (Action)
+PUT http://localhost:9000/.netlify/functions/server/api/users/12/actions/16 HTTP/1.1
+content-type: application/json
+
+{
+  "description": "Kick off test project",
+  "project_id": 12,
+  "notes": "Let's get it started.",
+  "is_complete": true
+}
+
+### DELETE (Users)
+DELETE http://localhost:9000/.netlify/functions/server/api/users/1
+
+### DELETE (Actions)
+DELETE http://localhost:9000/.netlify/functions/server/api/users/1/actions/3
+
+
