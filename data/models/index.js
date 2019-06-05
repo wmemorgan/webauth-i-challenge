@@ -24,6 +24,20 @@ async function findById(id, table) {
   }
 }
 
+async function findByUser(username, table) {
+  console.log(`findByUser username: `, username)
+  try {
+    let data = await db(table)
+      .where({ username })
+      .first()
+    console.log(`findByUser data: `, data)
+    return data
+  }
+  catch (err) {
+    return err
+  }
+}
+
 async function insert(data, table) {
   try {
     let newRecordId = await db(table).insert(data, 'id')
@@ -69,6 +83,7 @@ module.exports = {
   db,
   find,
   findById,
+  findByUser,
   insert,
   update,
   remove
