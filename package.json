@@ -1,0 +1,28 @@
+{
+  "name": "webauth-i-challenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:wmemorgan/webauth-i-challenge.git",
+  "author": "Wilfred Morgan <wil.me.morgan@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "both": "^0.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.18.0",
+    "knex": "^0.17.3",
+    "morgan": "^1.9.1",
+    "serverless-http": "^2.0.2"
+  },
+  "devDependencies": {
+    "netlify-lambda": "^1.4.13",
+    "nodemon": "^1.19.1"
+  },
+  "scripts": {
+    "start": "yarn start:lambda",
+    "start:lambda": "netlify-lambda serve api",
+    "dev" : "nodemon api/server.js",
+    "prod": "yarn build:lambda",
+    "build:lambda": "netlify-lambda build api"
+  }
+}
