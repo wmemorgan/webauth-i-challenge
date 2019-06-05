@@ -1,51 +1,42 @@
 ### GET (Basic)
-http://localhost:9000/.netlify/functions/server/api
+http://localhost:5000
 
 ### GET Users (ALL)
-GET http://localhost:9000/.netlify/functions/server/api/users HTTP/1.1
-username: boromir
-password: pass
+http://localhost:5000/api/users
 
-### GET Actions (ALL)
-http://localhost:9000/.netlify/functions/server/api/
-
-### GET Users (by ID)
-http://localhost:9000/.netlify/functions/server/api/users/1
-
-### GET Actions (ID)
-http://localhost:9000/.netlify/functions/server/api/users/2/actions/4
-
-### POST (Users)
-POST http://localhost:9000/.netlify/functions/server/api/register HTTP/1.1
+### GET Users (Protected Route)
+GET http://localhost:5000/api/users HTTP/1.1
+username: testuser2
 content-type: application/json
 
 {
-  "username": "pippin",
+  "username": "testuser2",
   "password": "pass"
 }
 
+### GET Users (by ID)
+http://localhost:5000/api/users/1
+
+### POST (Register)
+POST http://localhost:5000/api/register HTTP/1.1
+content-type: application/json
+
+{
+  "username": "testuser4",
+  "password": "abc123"
+}
+
 ### POST (Login)
-POST http://localhost:9000/.netlify/functions/server/api/login HTTP/1.1
+POST http://localhost:5000/api/login HTTP/1.1
 content-type: application/json
 
 {
-  "username": "sam",
-  "password": "baggisdns"
+  "username": "testuser2",
+  "password": "abc123"
 }
 
-### POST (Actions)
-POST http://localhost:9000/.netlify/functions/server/api/users/13/actions HTTP/1.1
-content-type: application/json
-
-{
-  "description": "Create AWS account",
-  "project_id": 13,
-  "notes": "Go to https://aws.amazon.com and sign up for a 'Free Tier' account",
-  "is_complete": false
-}
-
-### PUT (Project)
-PUT http://localhost:9000/.netlify/functions/server/api/users/12 HTTP/1.1
+### PUT (Users)
+PUT http://localhost:5000/api/users/12 HTTP/1.1
 content-type: application/json
 
 {
@@ -54,21 +45,9 @@ content-type: application/json
   "is_complete": false
 }
 
-### PUT (Action)
-PUT http://localhost:9000/.netlify/functions/server/api/users/12/actions/16 HTTP/1.1
-content-type: application/json
-
-{
-  "description": "Kick off test project",
-  "project_id": 12,
-  "notes": "Let's get it started.",
-  "is_complete": true
-}
 
 ### DELETE (Users)
-DELETE http://localhost:9000/.netlify/functions/server/api/users/1
+DELETE http://localhost:5000/api/users/6
 
-### DELETE (Actions)
-DELETE http://localhost:9000/.netlify/functions/server/api/users/1/actions/3
 
 
