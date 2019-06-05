@@ -14,18 +14,14 @@
     "knex": "^0.17.3",
     "morgan": "^1.9.1",
     "pg": "^7.11.0",
-    "serverless-http": "^2.0.2",
     "sqlite3": "^4.0.8"
   },
   "devDependencies": {
-    "netlify-lambda": "^1.4.13",
     "nodemon": "^1.19.1"
   },
   "scripts": {
-    "start": "yarn start:lambda",
-    "start:lambda": "netlify-lambda serve api",
-    "dev": "nodemon api/server.js",
-    "prod": "yarn build:lambda",
-    "build:lambda": "netlify-lambda build api"
+    "start": "yarn prod",
+    "dev": "nodemon index.js",
+    "prod": "node index.js"
   }
 }
