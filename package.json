@@ -6,13 +6,15 @@
   "author": "Wilfred Morgan <wil.me.morgan@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "both": "^0.0.0",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^3.18.0",
     "knex": "^0.17.3",
     "morgan": "^1.9.1",
-    "serverless-http": "^2.0.2"
+    "pg": "^7.11.0",
+    "serverless-http": "^2.0.2",
+    "sqlite3": "^4.0.8"
   },
   "devDependencies": {
     "netlify-lambda": "^1.4.13",
@@ -21,7 +23,7 @@
   "scripts": {
     "start": "yarn start:lambda",
     "start:lambda": "netlify-lambda serve api",
-    "dev" : "nodemon api/server.js",
+    "dev": "nodemon api/server.js",
     "prod": "yarn build:lambda",
     "build:lambda": "netlify-lambda build api"
   }
