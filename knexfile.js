@@ -20,7 +20,7 @@ module.exports = {
     client: 'pg',
     useNullAsDefault: true,    
     connection: {
-      connectionString: process.env.DATABASE_URL,
+      connectionString: process.env.AWS_DATABASE_URL,
       ssl: true
     },
     migrations: {
