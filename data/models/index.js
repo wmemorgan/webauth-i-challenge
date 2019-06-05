@@ -27,7 +27,7 @@ async function findById(id, table) {
 async function insert(data, table) {
   try {
     let newRecordId = await db(table).insert(data, 'id')
-    let newRecord = await findById(newRecordId)
+    let newRecord = await findById(newRecordId, 'Users')
     return newRecord
   }
   catch (err) {
@@ -55,7 +55,7 @@ async function remove(id, table) {
       .where({ id }).del()
     if (deleteCount > 0) {
       return {
-        message: `${deleteCount} ${updateCount > 1 ?
+        message: `${deleteCount} ${deleteCount > 1 ?
           'records' : 'record'} deleted`
       }
     } else throw err
