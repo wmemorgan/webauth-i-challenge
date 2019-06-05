@@ -2,7 +2,7 @@ const express = require('express')
 const helmet = require('helmet')
 const cors = require('cors')
 const logger = require('morgan')
-const bcrpyt = require('bcryptjs')
+const bcrypt = require('bcryptjs')
 
 // Import data models
 const db = require('../data/models')
@@ -12,6 +12,9 @@ const server = express()
 const router = express.Router()
 
 //==== Global Middleware ==== //
+const userValidation = [requiredData, validateUser]
+const protectedRoute = [userValidation, userAuthorization]
+
 server.use(helmet())
 server.use(cors())
 server.use(express.json())
@@ -19,7 +22,7 @@ server.use(logger('dev'))
 
 // User Resource Routes
 // ==== GET ==== //
-router.get('/users', async (req, res) => {
+router.get('/users', protectedRoute, async (req, res) => {
   try {
     let data = await db.find('users')
     res.send(data)
@@ -28,6 +31,17 @@ router.get('/users', async (req, res) => {
     res.status(500).send(err.message)
   }
 })
+
+// router.get('/users', async (req, res) => {
+//   const { username } = req.headers
+//   try {
+//     let user = await db.findByUser(username, 'Users')
+//     res.send(user)
+//   }
+//   catch (err) {
+//     res.status(500).send(err.message)
+//   }
+// })
 
 // ==== DELETE ==== //
 router.delete('/users/:id', validateId, async (req, res) => {
@@ -56,9 +70,15 @@ router.post('/register', requiredData, async (req, res) => {
   }
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', requiredData, async (req, res) => {
+  let { username, password } = req.body
   try {
-
+    let user = await db.findByUser(username, 'Users')
+    if (user && bcrypt.compareSync(password, user.password)) {
+      res.json({ message: `Greetings ${username}!`})
+    } else {
+      res.status(401).json({ message: `You shall not pass!` })
+    }
   }
   catch (err) {
     res.status(500).send(err.message)
@@ -97,6 +117,37 @@ async function validateId(req, res, next) {
   }
   catch (err) {
     res.status(500).json(err.message)
+  }
+}
+
+async function validateUser(req, res, next) {
+  let { username } = req.headers
+  try {
+    let data = await db.findByUser(username, 'Users')
+    if (data) {
+      req.data = data
+      next()
+    } else {
+      res.status(404).json({ message: `You shall not pass!` })
+    }
+  }
+  catch (err) {
+    res.status(500).json(err.message)
+  }
+}
+
+async function userAuthorization(req, res, next) {
+  let { username, password } = req.body
+  try {
+    let user = await db.findByUser(username, 'Users')
+    if (user && bcrypt.compareSync(password, user.password)) {
+      next()
+    } else {
+      res.status(401).json({ message: 'You shall not pass!' })
+    }
+  }
+  catch (err) {
+    res.status(500).send(err.message)
   }
 }
 
