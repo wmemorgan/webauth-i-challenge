@@ -12,6 +12,7 @@ const server = express()
 const router = express.Router()
 
 //==== Global Middleware ==== //
+const { validateUser, userAuthorization, validateId } = require('../middleware')
 const userValidation = [requiredData, validateUser]
 const protectedRoute = [userValidation, userAuthorization]
 
@@ -32,17 +33,6 @@ router.get('/users', protectedRoute, async (req, res) => {
   }
 })
 
-// router.get('/users', async (req, res) => {
-//   const { username } = req.headers
-//   try {
-//     let user = await db.findByUser(username, 'Users')
-//     res.send(user)
-//   }
-//   catch (err) {
-//     res.status(500).send(err.message)
-//   }
-// })
-
 // ==== DELETE ==== //
 router.delete('/users/:id', validateId, async (req, res) => {
   try {
@@ -57,7 +47,6 @@ router.delete('/users/:id', validateId, async (req, res) => {
 // Register Resource Route
 router.post('/register', requiredData, async (req, res) => {
   let user = req.body
-
   const hash = bcrpyt.hashSync(user.password, 14)
   user.password = hash
 
@@ -70,6 +59,7 @@ router.post('/register', requiredData, async (req, res) => {
   }
 })
 
+// Login Resource Route
 router.post('/login', requiredData, async (req, res) => {
   let { username, password } = req.body
   try {
@@ -102,52 +92,6 @@ function requiredData(req, res, next) {
     res.status(400).json({ message: "Missing required field." })
   } else {
     next()
-  }
-}
-
-async function validateId(req, res, next) {
-  try {
-    let data = await db.findById(req.params.id, 'Users')
-    if (data) {
-      req.data = data
-      next()
-    } else {
-      res.status(404).json({ message: `User ID ${req.params.id} not found` })
-    }
-  }
-  catch (err) {
-    res.status(500).json(err.message)
-  }
-}
-
-async function validateUser(req, res, next) {
-  let { username } = req.headers
-  try {
-    let data = await db.findByUser(username, 'Users')
-    if (data) {
-      req.data = data
-      next()
-    } else {
-      res.status(404).json({ message: `You shall not pass!` })
-    }
-  }
-  catch (err) {
-    res.status(500).json(err.message)
-  }
-}
-
-async function userAuthorization(req, res, next) {
-  let { username, password } = req.body
-  try {
-    let user = await db.findByUser(username, 'Users')
-    if (user && bcrypt.compareSync(password, user.password)) {
-      next()
-    } else {
-      res.status(401).json({ message: 'You shall not pass!' })
-    }
-  }
-  catch (err) {
-    res.status(500).send(err.message)
   }
 }
 
