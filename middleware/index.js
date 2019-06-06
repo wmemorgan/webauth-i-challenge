@@ -2,6 +2,19 @@ const bcrypt = require('bcryptjs')
 
 const db = require('../data/models')
 
+const inputDataChecker = (arr, target) => target.every(v => arr.includes(v))
+const requiredFields = ['username', 'password']
+
+function requiredData(req, res, next) {
+  if (!req.body || !Object.keys(req.body).length) {
+    res.status(400).json({ message: "Missing user data" })
+  } else if (!inputDataChecker(Object.keys(req.body), requiredFields)) {
+    res.status(400).json({ message: "Missing required field." })
+  } else {
+    next()
+  }
+}
+
 async function validateId(req, res, next) {
   try {
     let data = await db.findById(req.params.id, 'Users')
@@ -50,5 +63,5 @@ async function userAuthorization(req, res, next) {
 }
 
 module.exports = {
-  validateUser, userAuthorization, validateId
+  validateUser, userAuthorization, validateId, requiredData
 }
