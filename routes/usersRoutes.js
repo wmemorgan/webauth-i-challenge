@@ -4,13 +4,11 @@ const router = require('express').Router()
 const db = require('../data/models')
 
 // Middleware
-const { requiredData, validateUser, userAuthorization, validateId } = require('../middleware')
-const userValidation = [requiredData, validateUser]
-const protectedRoute = [userValidation, userAuthorization]
+const { userAuthorization, validateId } = require('../middleware')
 
 // User Resource Routes
 // ==== GET ==== //
-router.get('/', protectedRoute, async (req, res) => {
+router.get('/', userAuthorization, async (req, res) => {
   try {
     let data = await db.find('users')
     res.send(data)
