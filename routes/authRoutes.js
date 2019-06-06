@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const bcrypt = require('bcryptjs')
 
 // Import data models
 const db = require('../data/models')
@@ -9,7 +10,7 @@ const { requiredData } = require('../middleware')
 // Authorization Resource Route
 router.post('/register', requiredData, async (req, res) => {
   let user = req.body
-  const hash = bcrpyt.hashSync(user.password, 14)
+  const hash = bcrypt.hashSync(user.password, 14)
   user.password = hash
 
   try {
@@ -26,6 +27,7 @@ router.post('/login', requiredData, async (req, res) => {
   try {
     let user = await db.findByUser(username, 'Users')
     if (user && bcrypt.compareSync(password, user.password)) {
+      req.session.user = user
       res.json({ message: `Greetings ${username}!` })
     } else {
       res.status(401).json({ message: `You shall not pass!` })
