@@ -3,6 +3,7 @@ const helmet = require('helmet')
 const cors = require('cors')
 const logger = require('morgan')
 const session = require('express-session')
+const SessionStore = require('connect-session-knex')(session)
 
 // Import routes
 const authRoutes = require('../routes/authRoutes')
@@ -20,7 +21,14 @@ const sessionConfig = {
     httpOnly: true
   },
   resave: false,
-  saveUninitialized: false 
+  saveUninitialized: false,
+  store: new SessionStore({
+    knex: require('../data/dbConfig'),
+    tablename: 'Sessions',
+    sidfieldName: 'sid',
+    createtable: true,
+    clearInterval: 60 * 60 * 1000
+  })
 }
 
 //==== Global Middleware ==== //
