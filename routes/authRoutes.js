@@ -39,7 +39,7 @@ router.post('/login', requiredData, async (req, res) => {
 })
 
 router.get('/logout', (req, res) => {
-  if(req.session.user) {
+  if(req.session) {
     req.session.destroy(err => {
       if(err) {
         res.status(500).json({ message: 'You can checkout anytime you like, but you can never leave.'})
