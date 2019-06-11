@@ -4,8 +4,8 @@ const db = require('../dbConfig')
 // ==== Application Methods ==== //
 async function getUsers() {
   try {
-    let data = await db('users')
-      .select(['id', 'username'])
+    let data = await db('Users')
+      .select('id', 'username')
       .orderBy('id')
     return data
   }
@@ -38,12 +38,10 @@ async function findById(id, table) {
 }
 
 async function findByUser(username, table) {
-  console.log(`findByUser username: `, username)
   try {
     let data = await db(table)
       .where({ username })
       .first()
-    console.log(`findByUser data: `, data)
     return data
   }
   catch (err) {
