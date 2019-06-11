@@ -10,7 +10,7 @@ const { userAuthorization, validateId } = require('../middleware')
 // ==== GET ==== //
 router.get('/', async (req, res) => {
   try {
-    let data = await db.find('Users')
+    let data = await db.getUsers()
     res.send(data)
   }
   catch (err) {
