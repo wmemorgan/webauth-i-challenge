@@ -4,6 +4,7 @@ const cors = require('cors')
 const logger = require('morgan')
 const session = require('express-session')
 const SessionStore = require('connect-session-knex')(session)
+// const cookieParser = require('cookie-parser')
 
 // Import routes
 const authRoutes = require('../routes/authRoutes')
@@ -18,7 +19,8 @@ const sessionConfig = {
   cookie: {
     maxAge: 1000 * 30,
     secure: process.env.NODE_ENV !== 'development',
-    httpOnly: false
+    httpOnly: false,
+    Path: '/'
   },
   resave: false,
   saveUninitialized: false,
@@ -35,6 +37,7 @@ const sessionConfig = {
 server.use(helmet())
 server.use(cors())
 server.use(express.json())
+// server.use(cookieParser())
 server.use(session(sessionConfig))
 server.use(logger('dev'))
 
