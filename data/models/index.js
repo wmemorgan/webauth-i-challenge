@@ -1,6 +1,19 @@
 // Initiate database connection
 const db = require('../dbConfig')
 
+// ==== Application Methods ==== //
+async function getUsers() {
+  try {
+    let data = await db('users')
+      .select(['id', 'username'])
+      .orderBy('id')
+    return data
+  }
+  catch (err) {
+    return err
+  }
+}
+
 // ==== Global Database Methods ==== //
 async function find(table) {
   try {
@@ -86,5 +99,6 @@ module.exports = {
   findByUser,
   insert,
   update,
-  remove
+  remove,
+  getUsers
 }

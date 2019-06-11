@@ -8,9 +8,9 @@ const { userAuthorization, validateId } = require('../middleware')
 
 // User Resource Routes
 // ==== GET ==== //
-router.get('/', userAuthorization, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    let data = await db.find('users')
+    let data = await db.find('Users')
     res.send(data)
   }
   catch (err) {

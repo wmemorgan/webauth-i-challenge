@@ -28,7 +28,8 @@ router.post('/login', requiredData, async (req, res) => {
     let user = await db.findByUser(username, 'Users')
     if (user && bcrypt.compareSync(password, user.password)) {
       req.session.user = user
-      res.json({ message: `Greetings ${username}!` })
+      console.log(`/login res`, res.session)
+      res.json(res.session)
     } else {
       res.status(401).json({ message: `You shall not pass!` })
     }

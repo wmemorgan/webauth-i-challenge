@@ -18,7 +18,7 @@ const sessionConfig = {
   cookie: {
     maxAge: 1000 * 30,
     secure: process.env.NODE_ENV !== 'development',
-    httpOnly: true
+    httpOnly: false
   },
   resave: false,
   saveUninitialized: false,

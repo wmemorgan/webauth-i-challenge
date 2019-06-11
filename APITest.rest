@@ -26,8 +26,8 @@ POST http://localhost:5000/api/auth/login HTTP/1.1
 content-type: application/json
 
 {
-  "username": "testuser2",
-  "password": "abc123"
+  "username": "Mike",
+  "password": "pass"
 }
 
 ### (Logout) GET 
