@@ -4,7 +4,6 @@ const cors = require('cors')
 const logger = require('morgan')
 const session = require('express-session')
 const SessionStore = require('connect-session-knex')(session)
-// const cookieParser = require('cookie-parser')
 
 // Import routes
 const authRoutes = require('../routes/authRoutes')
@@ -35,9 +34,9 @@ const sessionConfig = {
 
 //==== Global Middleware ==== //
 server.use(helmet())
-server.use(cors())
+server.use(cors({origin: ['http://localhost:3000', 'https://netlify.com'],
+credentials: true }))
 server.use(express.json())
-// server.use(cookieParser())
 server.use(session(sessionConfig))
 server.use(logger('dev'))
 
